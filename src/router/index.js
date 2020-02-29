@@ -54,7 +54,6 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/example',
     component: Layout,
@@ -96,6 +95,27 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
+  // 只有在 mete 中设置了roles属性才需要进行权限验证
+  {
+    path: '/admins',
+    component: Layout,
+    redirect: '/admins/index',
+    name: 'Admins',
+    meta: {
+      title: '管理员管理',
+      icon: 'user'
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/admins/index'),
+        name:'管理员列表',
+        meta: { title: '管理员列表' }
+      }
+    ]
+  },
+
   {
     path: '/nested',
     component: Layout,
