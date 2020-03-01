@@ -261,7 +261,7 @@ import { filterObjNullVal } from "@/utils/index";
 import Pagination from "@/components/Pagination";
 
 export default {
-  name: "",
+  name: "AdminList",
   data() {
     return {
       list: null,
@@ -434,7 +434,7 @@ export default {
               this.list.push(response.data);
               this.dialogFormVisible = false;
               this.$notify({
-                title: "Success",
+                title: "操作成功",
                 message: response.message,
                 type: "success",
                 duration: 2000

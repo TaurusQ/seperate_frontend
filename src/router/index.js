@@ -87,6 +87,27 @@ export const constantRoutes = [
         meta: { title: 'Form', icon: 'form' }
       }
     ]
+  },
+
+  {
+    path:'/admininfo',
+    component: Layout,
+    redirect: '/admininfo/modify_info',
+    hidden: true,
+    children:[
+      {
+        path: 'modify_info',
+        name: '修改个人信息',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '修改个人信息'}
+      },
+      {
+        path: 'modify_password',
+        name: '修改密码',
+        component: () => import('@/views/admininfo/modify_password'),
+        meta: { title: '修改密码'}
+      }
+    ]
   }
 ]
 
@@ -101,7 +122,7 @@ export const asyncRoutes = [
     path: '/admins',
     component: Layout,
     redirect: '/admins/index',
-    name: 'Admins',
+    name: '管理员管理',
     meta: {
       title: '管理员管理',
       icon: 'user'
@@ -109,9 +130,9 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/admins/index'),
         name:'管理员列表',
-        meta: { title: '管理员列表' }
+        component: () => import('@/views/admins/index'),
+        meta: { title: '管理员列表',icon:'user' }
       }
     ]
   },
