@@ -8,6 +8,13 @@
         class="filter-item"
       />
 
+      <el-input
+        v-model="listQuery.remark"
+        placeholder="请输入备注"
+        style="width: 200px;"
+        class="filter-item"
+      />
+
       <el-select
         v-model="listQuery.status"
         placeholder="请选择用户状态"
@@ -22,7 +29,9 @@
           :value="item.status_code"
         />
       </el-select>
+    </div>
 
+    <div class="filter-container">
       <el-date-picker
         v-model="listQuery.created_at"
         align="right"
@@ -44,7 +53,7 @@
         搜索
       </el-button>
 
-      <el-button class="filter-item" icon="el-icon-edit" @click="handleCreate">
+      <el-button class="filter-item" icon="el-icon-plus" @click="handleCreate">
         添加
       </el-button>
 
@@ -83,6 +92,24 @@
         </template>
       </el-table-column>
 
+      <el-table-column label="昵称" align="center" width="80">
+        <template slot-scope="{ row }">
+          <span>{{ row.nickname }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="描述" align="center">
+        <template slot-scope="{ row }">
+          <span>{{ row.description }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="备注" align="center" width="120">
+        <template slot-scope="{ row }">
+          <span>{{ row.remark }}</span>
+        </template>
+      </el-table-column>
+
       <!-- created-at -->
       <el-table-column label="创建时间" width="110px" align="center">
         <template slot-scope="{ row }">
@@ -103,7 +130,12 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row, $index }">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+          <el-button
+            icon="el-icon-edit"
+            type="primary"
+            size="mini"
+            @click="handleUpdate(row)"
+          >
             编辑
           </el-button>
           <!-- <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
@@ -115,6 +147,7 @@
           <el-button
             v-if="row.id > 3"
             size="mini"
+            icon="el-icon-delete"
             type="danger"
             @click="handleDelete(row, $index)"
           >
@@ -132,21 +165,6 @@
       @pagination="getList"
     />
 
-    <!-- <el-dialog
-      title="删除确认"
-      :visible.sync="deleteDialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span>这是一段信息</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog> -->
-
     <!-- 创建/更新 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
@@ -159,10 +177,19 @@
       >
         <!-- 这里的prop对应model的属性 -->
         <el-form-item label="用户名" prop="username" clearable>
-          <el-input v-model="temp.username" :disabled="this.dialogStatus == 'update'"/>
+          <el-input
+            v-model="temp.username"
+            :disabled="this.dialogStatus == 'update'"
+          />
         </el-form-item>
 
-        <el-form-item label="密码" prop="password" clearable show-password v-show="this.dialogStatus == 'create'">
+        <el-form-item
+          label="密码"
+          prop="password"
+          clearable
+          show-password
+          v-show="this.dialogStatus == 'create'"
+        >
           <el-input v-model="temp.password" />
         </el-form-item>
 
@@ -221,8 +248,15 @@
 </template>
 
 <script>
-import { getList, createAdmin, getDetail, updateAdmin,deleteAdmin,batchDeleteAdmin } from "@/api/admin_list";
-import {filterObjNullVal} from "@/utils/index"
+import {
+  getList,
+  createAdmin,
+  getDetail,
+  updateAdmin,
+  deleteAdmin,
+  batchDeleteAdmin
+} from "@/api/admin_list";
+import { filterObjNullVal } from "@/utils/index";
 
 import Pagination from "@/components/Pagination";
 
@@ -393,12 +427,11 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-
           // 创建操作后，返回最新的数据，在数组中进行更新
           createAdmin(this.temp).then(response => {
             if (response.status == "success") {
               // this.list.push(this.temp);
-              this.list.push(response.data)
+              this.list.push(response.data);
               this.dialogFormVisible = false;
               this.$notify({
                 title: "Success",
@@ -412,33 +445,33 @@ export default {
       });
     },
 
-    handleUpdate(data){
+    handleUpdate(data) {
       //console.log("update handle:"+JSON.stringify(data))
-      this.temp = Object.assign({},data)
+      this.temp = Object.assign({}, data);
 
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
+      this.dialogStatus = "update";
+      this.dialogFormVisible = true;
       this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+        this.$refs["dataForm"].clearValidate();
+      });
     },
 
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if(valid){
-          const tempData = Object.assign({},this.temp)
+      this.$refs["dataForm"].validate(valid => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp);
           // 更新操作之后返回最新的数据
-          updateAdmin(tempData.id,tempData).then(response => {
+          updateAdmin(tempData.id, tempData).then(response => {
             //response
-            const item = this.list.findIndex(v => v.id == this.temp.id)
-            this.list.splice(item,1,this.temp)
+            const item = this.list.findIndex(v => v.id == this.temp.id);
+            this.list.splice(item, 1, this.temp);
             this.$notify({
-                title: "操作成功",
-                message: response.message,
-                type: "success",
-                duration: 2000
-              });
-            this.dialogFormVisible = false;  
+              title: "操作成功",
+              message: response.message,
+              type: "success",
+              duration: 2000
+            });
+            this.dialogFormVisible = false;
           });
         }
       });
@@ -497,13 +530,13 @@ export default {
     }
   },
 
-  watch:{
-    dialogStatus(val){
+  watch: {
+    dialogStatus(val) {
       //console.log("dialogStatus的值是："+val);
-      if(val == "create"){
+      if (val == "create") {
         // 更新时不需要验证密码
         this.rules.password[0].required = true;
-      }else if(val == "update"){
+      } else if (val == "update") {
         // 更新时不需要验证密码
         this.rules.password[0].required = false;
       }
