@@ -98,7 +98,7 @@ export const constantRoutes = [
       {
         path: 'modify_info',
         name: '修改个人信息',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/admininfo/modify_info'),
         meta: { title: '修改个人信息'}
       },
       {

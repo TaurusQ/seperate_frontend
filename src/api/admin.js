@@ -8,7 +8,7 @@ export function login(data) {
   });
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return request({
     url: "/admin/me",
     method: "get"
@@ -29,4 +29,25 @@ export function modify_password(data) {
     method: "post",
     data
   });
+}
+
+// 修改个人信息
+export function modify_info(data){
+  return request({
+    url: "/admin/admins/modify/info",
+    method: "post",
+    data
+  });
+}
+
+// 图片（头像）上传
+export function avatar_upload(data){
+  return request({
+    url: '/upload/pic/avatar',
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
 }

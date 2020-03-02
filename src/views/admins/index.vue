@@ -98,6 +98,19 @@
         </template>
       </el-table-column>
 
+      <el-table-column  label="头像" width="80" align="center">
+        <template slot-scope="{ row }">
+          <!-- <img v-if="row.avatar" :src="row.avatar" alt="" width="50" height="50"> -->
+          <!-- <el-avatar v-if="row.avatar" shape="square" size="large" :src="row.avatar"></!-->
+          <el-image 
+            v-if="row.avatar" 
+            style="width: 64px; height: 64px"
+            :src="row.avatar" 
+            :preview-src-list="[row.avatar]">
+          </el-image>
+        </template>
+      </el-table-column>
+
       <el-table-column label="描述" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.description }}</span>
