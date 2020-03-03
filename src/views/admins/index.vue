@@ -53,7 +53,7 @@
         搜索
       </el-button>
 
-      <el-button class="filter-item" icon="el-icon-plus" @click="handleCreate">
+      <el-button class="filter-item" icon="el-icon-edit-outline" @click="handleCreate">
         添加
       </el-button>
 
@@ -166,6 +166,15 @@
           >
             删除
           </el-button>
+
+          <el-button
+            size="mini"
+            icon="el-icon-user"
+            @click="handleAssignRole(row,$index)"
+          >
+            分配角色
+          </el-button>
+
         </template>
       </el-table-column>
     </el-table>

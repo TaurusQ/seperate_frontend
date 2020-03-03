@@ -133,6 +133,12 @@ export const asyncRoutes = [
         name:'管理员列表',
         component: () => import('@/views/admins/index'),
         meta: { title: '管理员列表',icon:'user' }
+      },
+      {
+        path: 'index2',
+        name:'管理员列表2',
+        component: () => import('@/views/admins/index'),
+        meta: { title: '管理员列表2',icon:'user' }
       }
     ]
   },
